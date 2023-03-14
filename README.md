@@ -1,4 +1,4 @@
-# Crear CLI de Node
+# Aplicación en la terminal que nos ayuda a crear commits con semántica.
 
 - [x] Inicializar el proyecto + Instalar Linter
 - [x] Pedirle al usuario el nombre del commit
