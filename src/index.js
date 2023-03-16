@@ -1,7 +1,7 @@
 import { intro, outro, text, select, confirm } from '@clack/prompts';
 import { COMMIT_TYPES } from './commit-types.js';
 import colors from 'picocolors';
-import { getChangedFiles, getStagedFiles } from './git.js';
+import { getChangedFiles, getStagedFiles, gitCommit } from './git.js';
 import { trytm } from '@bdsqqq/try';
 
 const [changedFiles, errorChangedFiles] = await trytm(getChangedFiles());
@@ -14,16 +14,16 @@ if (errorChangedFiles ?? errorStagedFiles) {
   process.exit(1);
 }
 
-if (stagedFiles.length === 0) {
+/* if (stagedFiles.length === 0) {
   outro(colors.red('Error: No hay archivos en el stage'));
   process.exit(1);
-}
+} */
 
 const commitType = await select({
   message: colors.cyan('Selecciona el tipo de commit:'),
   options: Object.entries(COMMIT_TYPES).map(([key, value]) => ({
     value: key,
-    label: ` ${key} · ${value.description}`,
+    label: ` ${key.padEnd(8, ' ')} · ${value.description}`,
   })),
 });
 
@@ -55,5 +55,12 @@ const shouldContinue = await confirm({
   
   ¿Confirmas?`,
 });
+
+if (!shouldContinue) {
+  outro(colors.yellow('No se ha creado el commit'));
+  process.exit(0);
+}
+
+//await gitCommit({ commit });
 
 outro('Gracias por usar el asistente');
