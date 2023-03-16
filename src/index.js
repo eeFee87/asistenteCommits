@@ -44,7 +44,16 @@ if (release) {
   });
 }
 
-let commit = `${commitType}: ${commitMessage}`
+let commit = `${commitType}: ${commitMessage}`;
 
-commit = breakingChange ? `${commit} [breaking change]` = commit
+commit = breakingChange ? `${commit} [breaking change]` : commit;
+
+const shouldContinue = await confirm({
+  initialValue: true,
+  message: `¿Quieres crear el commit con el siguiente mensaje?
+  ${colors.green(colors.bold(commit))}
+  
+  ¿Confirmas?`,
+});
+
 outro('Gracias por usar el asistente');
