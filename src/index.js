@@ -28,17 +28,21 @@ const commitType = await select({
 });
 
 const commitMessage = await text({
-  message: 'Introduce el mensaje del commit:',
-  placeholder: 'Add new feature',
+  message: colors.cyan('Introduce el mensaje del commit:'),
 });
+
 const { release } = COMMIT_TYPES[commitType];
+
 let breakingChange = false;
+
 if (release) {
   breakingChange = await confirm({
     initialValue: false,
-    message: `¿Tiene este commit cambios que rompen la compatibilidad anterior?
+    message: `${colors.cyan(
+      '¿Tiene este commit cambios que rompen la compatibilidad anterior?'
+    )}
     
-    ${colors.gray(
+    ${colors.yellow(
       'Si la repuesta es sí, deberías crear un commit con el tipo "Breaking Change" y al hacer release se publicará una versión major'
     )}`,
   });
@@ -50,10 +54,10 @@ commit = breakingChange ? `${commit} [breaking change]` : commit;
 
 const shouldContinue = await confirm({
   initialValue: true,
-  message: `¿Quieres crear el commit con el siguiente mensaje?
+  message: `${colors.cyan('¿Quieres crear el commit con el siguiente mensaje?')}
   ${colors.green(colors.bold(commit))}
   
-  ¿Confirmas?`,
+  ${colors.cyan('¿Confirmas?')}`,
 });
 
 if (!shouldContinue) {
@@ -61,6 +65,8 @@ if (!shouldContinue) {
   process.exit(0);
 }
 
-//await gitCommit({ commit });
+await gitCommit({ commit });
 
-outro('Gracias por usar el asistente');
+outro(
+  colors.green(`✅ Commmit creado con éxito. ¡Gracias por usar el asistente!`)
+);
