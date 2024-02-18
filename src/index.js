@@ -23,12 +23,12 @@ const commitType = await select({
   message: colors.cyan('Selecciona el tipo de commit:'),
   options: Object.entries(COMMIT_TYPES).map(([key, value]) => ({
     value: key,
-    label: ` ${key.padEnd(8, ' ')} · ${value.description}`,
-  })),
+    label: ` ${key.padEnd(8, ' ')} · ${value.description}`
+  }))
 });
 
 const commitMessage = await text({
-  message: colors.cyan('Introduce el mensaje del commit:'),
+  message: colors.cyan('Introduce el mensaje del commit:')
 });
 
 const { release } = COMMIT_TYPES[commitType];
@@ -44,7 +44,7 @@ if (release) {
     
     ${colors.yellow(
       'Si la repuesta es sí, deberías crear un commit con el tipo "Breaking Change" y al hacer release se publicará una versión major'
-    )}`,
+    )}`
   });
 }
 
@@ -57,7 +57,7 @@ const shouldContinue = await confirm({
   message: `${colors.cyan('¿Quieres crear el commit con el siguiente mensaje?')}
   ${colors.green(colors.bold(commit))}
   
-  ${colors.cyan('¿Confirmas?')}`,
+  ${colors.cyan('¿Confirmas?')}`
 });
 
 if (!shouldContinue) {
@@ -68,5 +68,5 @@ if (!shouldContinue) {
 await gitCommit({ commit });
 
 outro(
-  colors.green(`✅ Commmit creado con éxito. ¡Gracias por usar el asistente!`)
+  colors.green('✅ Commmit creado con éxito. ¡Gracias por usar el asistente!')
 );
